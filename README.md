@@ -1,6 +1,7 @@
 # flutter_earth_history
 
-A new Flutter project.
+A Flutter Demonstration app about Earth History inspired by Wonderous.
+You can find the Wonderous app in the ...
 
 ## Getting Started
 
@@ -23,8 +24,9 @@ images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-awa
 ## Localization
 
 This project generates localized messages based on arb files found in
-the `lib/src/localization` directory.
+the `lib/localization` directory.
 
 To support additional languages, please visit the tutorial on
 [Internationalizing Flutter
 apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+
