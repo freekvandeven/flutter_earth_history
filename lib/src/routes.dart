@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_earth_history/src/features/timeline/timeline.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -30,7 +31,7 @@ final routerProvider = Provider<GoRouter>(
     routes: [
       GoRoute(
         path: ProjectRoute.globalTimelineScreen.route,
-        builder: (context, state) => const Text('GlobalTimeLine'),
+        builder: (context, state) => const GlobalTimelineScreen(),
       ),
       GoRoute(
         path: ProjectRoute.overviewScreen.route,
