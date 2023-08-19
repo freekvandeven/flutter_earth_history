@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_earth_history/src/features/timeline/widgets/divider.dart';
 import 'package:flutter_earth_history/src/global/extensions/localization.dart';
 import 'package:flutter_earth_history/src/services/history_events.dart';
 import 'package:flutter_earth_history/src/theme.dart';
@@ -10,6 +11,7 @@ class GlobalTimelineScreen extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    var size = MediaQuery.of(context).size;
     var localization = context.localizations;
     var scrollController = useScrollController();
     var historyEvents = ref.watch(historyEventsProvider);
@@ -24,6 +26,7 @@ class GlobalTimelineScreen extends HookConsumerWidget {
       appBar: AppBar(
         title: Text(localization.titleTimeline),
         centerTitle: true,
+        backgroundColor: ProjectTheme.backgroundColor,
       ),
       backgroundColor: ProjectTheme.backgroundColor,
       body: Stack(
@@ -38,14 +41,17 @@ class GlobalTimelineScreen extends HookConsumerWidget {
                     for (var i = 0; i < 30; i++) ...[
                       const SizedBox(
                         height: 100,
+                        child: Text('Hallo'),
                       ),
                     ],
                   ],
                 ),
                 for (var event in historyEvents) ...[
-                  Positioned(
-                    left: 20,
-                    top: event.yearAfterBC * yearPixelLength,
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: size.width * 0.1,
+                      top: event.yearAfterBC * yearPixelLength,
+                    ),
                     child: Container(
                       width: 40,
                       height: 40,
@@ -61,7 +67,12 @@ class GlobalTimelineScreen extends HookConsumerWidget {
           ),
 
           // year divider at half the page with the current year
-
+          Padding(
+            padding: EdgeInsets.only(top: size.height * 0.5),
+            child: DividerLine(
+              scrollController: scrollController,
+            ),
+          ),
           // horizontal timeline preview
         ],
       ),
