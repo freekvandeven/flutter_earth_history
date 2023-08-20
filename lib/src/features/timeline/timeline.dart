@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_earth_history/src/features/timeline/widgets/divider.dart';
+import 'package:flutter_earth_history/src/features/timeline/widgets/information_card.dart';
 import 'package:flutter_earth_history/src/global/extensions/localization.dart';
 import 'package:flutter_earth_history/src/services/history_events.dart';
 import 'package:flutter_earth_history/src/theme.dart';
@@ -153,6 +154,23 @@ class GlobalTimelineScreen extends HookConsumerWidget {
               scrollController: scrollController,
             ),
           ),
+          if (yearActive.value != null) ...[
+            Container(
+              margin: EdgeInsets.only(
+                top: size.height * 0.05,
+                left: size.width * 0.02,
+                right: size.width * 0.02,
+              ),
+              width: double.infinity,
+              height: size.height * 0.1,
+              child: EventInformationCard(
+                event: historyEvents.firstWhere(
+                  (event) => event.yearAfterBC == yearActive.value,
+                ),
+              ),
+            ),
+          ],
+
           // horizontal timeline preview
         ],
       ),

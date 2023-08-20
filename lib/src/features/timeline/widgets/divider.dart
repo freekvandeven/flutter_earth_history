@@ -37,11 +37,14 @@ class DividerLine extends HookWidget {
                 height: 1.0,
               ),
             ),
-            Text(
-              currentYear.value < 0 ? 'BCE' : 'AD',
-              style: const TextStyle(
-                fontSize: 15,
-                height: 1.0,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                currentYear.value.isNegative ? 'BCE' : 'AD',
+                style: const TextStyle(
+                  fontSize: 15,
+                  height: 1.0,
+                ),
               ),
             ),
           ],
