@@ -10,6 +10,10 @@ import 'package:flutter_earth_history/src/theme.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+const Duration _fadeOutDuration = Duration(milliseconds: 1000);
+const Duration _fadeInDuration = Duration(milliseconds: 1000);
+const Duration _fadeAnimationDuration = Duration(milliseconds: 500);
+
 class GlobalTimelineScreen extends HookConsumerWidget {
   const GlobalTimelineScreen({super.key});
 
@@ -29,17 +33,16 @@ class GlobalTimelineScreen extends HookConsumerWidget {
     var yearInterval = 100;
     var blockHeight = yearInterval * yearPixelLength;
     var yearActive = useState<int?>(null);
+    var displayedActive = useState<int?>(null);
     var fadingYear = useState<int?>(null);
+    var hideCard = useState<bool>(true);
 
-    // i need a flutter_hooks animation for sliding in the information card
-    // when a year is active
-
-    // var animationController = useAnimationController(
-    //   duration: const Duration(milliseconds: 500),
-    // );
-    // var animation = useAnimation(
-    //   Tween<double>(begin: 0, end: 1).animate(animationController),
-    // );
+    var animationController = useAnimationController(
+      duration: _fadeAnimationDuration,
+    );
+    var animation = useAnimation(
+      Tween<double>(begin: 0, end: 1).animate(animationController),
+    );
 
     useListenable(scrollController).addListener(() {
       var currentYear = yearStart +
@@ -61,9 +64,13 @@ class GlobalTimelineScreen extends HookConsumerWidget {
           yearActive.value = null;
           // remove the fading year after 1 second
           Future.delayed(
-            const Duration(seconds: 1),
+            _fadeOutDuration,
             () {
-              fadingYear.value = null;
+              if (fadingYear.value != null) {
+                fadingYear.value = null;
+                hideCard.value = true;
+                displayedActive.value = null;
+              }
             },
           );
         }
@@ -80,6 +87,18 @@ class GlobalTimelineScreen extends HookConsumerWidget {
         yearActive.value = closestEvent.yearAfterBC;
         fadingYear.value = null;
         unawaited(HapticFeedback.heavyImpact());
+        // after a second start the animation to appear the information card
+        Future.delayed(
+          _fadeInDuration,
+          () {
+            if (yearActive.value == closestEvent.yearAfterBC &&
+                (hideCard.value || displayedActive.value != yearActive.value)) {
+              hideCard.value = false;
+              displayedActive.value = yearActive.value;
+              animationController.forward(from: 0);
+            }
+          },
+        );
       }
     });
 
@@ -174,10 +193,13 @@ class GlobalTimelineScreen extends HookConsumerWidget {
               scrollController: scrollController,
             ),
           ),
-          if (fadingYear.value != null || yearActive.value != null) ...[
+          if (!hideCard.value &&
+              (fadingYear.value != null || displayedActive.value != null)) ...[
+            // animate the card coming in from the top
+            // based on the animation value it goes from 0 to 0.05
             Container(
               margin: EdgeInsets.only(
-                top: size.height * 0.05,
+                top: size.height * (animation * 0.03),
                 left: size.width * 0.02,
                 right: size.width * 0.02,
               ),
@@ -186,7 +208,7 @@ class GlobalTimelineScreen extends HookConsumerWidget {
               child: EventInformationCard(
                 event: historyEvents.firstWhere(
                   (event) =>
-                      event.yearAfterBC == yearActive.value ||
+                      event.yearAfterBC == displayedActive.value ||
                       event.yearAfterBC == fadingYear.value,
                 ),
               ),
