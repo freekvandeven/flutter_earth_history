@@ -19,8 +19,36 @@ class GlobalTimelineScreen extends HookConsumerWidget {
     var yearEnd = 2000;
     var totalYears = yearEnd - yearStart;
     var yearPixelLength = 1.0;
+    var eventDetectionRadius = 10.0;
     var yearInterval = 100;
     var blockHeight = yearInterval * yearPixelLength;
+    var yearActive = useState<int?>(null);
+    useListenable(scrollController).addListener(() {
+      var currentYear = yearStart +
+          scrollController.position.pixels /
+              scrollController.position.maxScrollExtent *
+              totalYears;
+      // get all the events that are within the detection radius
+      var events = historyEvents
+          .where(
+            (event) =>
+                event.yearAfterBC - currentYear < eventDetectionRadius &&
+                event.yearAfterBC - currentYear > -eventDetectionRadius,
+          )
+          .toList();
+      if (events.isEmpty) {
+        yearActive.value = null;
+        return;
+      }
+      // take the event that is closest to the current year
+      var closestEvent = events.reduce(
+        (a, b) => (a.yearAfterBC - currentYear).abs() <
+                (b.yearAfterBC - currentYear).abs()
+            ? a
+            : b,
+      );
+      yearActive.value = closestEvent.yearAfterBC;
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text(localization.titleTimeline),
@@ -68,15 +96,29 @@ class GlobalTimelineScreen extends HookConsumerWidget {
                 for (var event in historyEvents) ...[
                   Padding(
                     padding: EdgeInsets.only(
-                      left: size.width * 0.1,
-                      top: event.yearAfterBC * yearPixelLength,
+                      left: size.width * 0.2 -
+                          (event.yearAfterBC == yearActive.value ? 2.5 : 0),
+                      top: size.height * 0.5 +
+                          (event.yearAfterBC == yearActive.value ? 2.5 : 5) +
+                          (event.yearAfterBC + yearStart.abs()) *
+                              yearPixelLength,
                     ),
                     child: Container(
-                      width: 40,
-                      height: 40,
-                      decoration: const BoxDecoration(
+                      width: event.yearAfterBC == yearActive.value ? 10 : 5,
+                      height: event.yearAfterBC == yearActive.value ? 10 : 5,
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.amber,
+                        color: ProjectTheme.eventColor,
+                        // add a gradient shadow around the circle
+                        boxShadow: event.yearAfterBC == yearActive.value
+                            ? [
+                                const BoxShadow(
+                                  color: ProjectTheme.eventAccentColor,
+                                  blurRadius: 10,
+                                  spreadRadius: 4,
+                                ),
+                              ]
+                            : null,
                       ),
                     ),
                   ),
