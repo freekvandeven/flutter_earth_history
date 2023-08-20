@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_earth_history/src/features/timeline/widgets/divider.dart';
 import 'package:flutter_earth_history/src/global/extensions/localization.dart';
 import 'package:flutter_earth_history/src/services/history_events.dart';
@@ -13,8 +16,10 @@ class GlobalTimelineScreen extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var size = MediaQuery.of(context).size;
     var localization = context.localizations;
+
     var scrollController = useScrollController();
     var historyEvents = ref.watch(historyEventsProvider);
+
     var yearStart = -3000;
     var yearEnd = 2000;
     var totalYears = yearEnd - yearStart;
@@ -23,6 +28,7 @@ class GlobalTimelineScreen extends HookConsumerWidget {
     var yearInterval = 100;
     var blockHeight = yearInterval * yearPixelLength;
     var yearActive = useState<int?>(null);
+
     useListenable(scrollController).addListener(() {
       var currentYear = yearStart +
           scrollController.position.pixels /
@@ -37,7 +43,10 @@ class GlobalTimelineScreen extends HookConsumerWidget {
           )
           .toList();
       if (events.isEmpty) {
-        yearActive.value = null;
+        if (yearActive.value != null) {
+          yearActive.value = null;
+          unawaited(HapticFeedback.selectionClick());
+        }
         return;
       }
       // take the event that is closest to the current year
@@ -47,8 +56,12 @@ class GlobalTimelineScreen extends HookConsumerWidget {
             ? a
             : b,
       );
-      yearActive.value = closestEvent.yearAfterBC;
+      if (yearActive.value != closestEvent.yearAfterBC) {
+        yearActive.value = closestEvent.yearAfterBC;
+        unawaited(HapticFeedback.heavyImpact());
+      }
     });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(localization.titleTimeline),
