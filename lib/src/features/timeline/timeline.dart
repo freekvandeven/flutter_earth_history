@@ -16,12 +16,11 @@ class GlobalTimelineScreen extends HookConsumerWidget {
     var scrollController = useScrollController();
     var historyEvents = ref.watch(historyEventsProvider);
     var yearStart = -3000;
-    var yearEnd = 2023;
+    var yearEnd = 2000;
     var totalYears = yearEnd - yearStart;
     var yearPixelLength = 1.0;
-    var currentYear = 1000.0;
-    debugPrint(totalYears.toString());
-    debugPrint(currentYear.toString());
+    var yearInterval = 100;
+    var blockHeight = yearInterval * yearPixelLength;
     return Scaffold(
       appBar: AppBar(
         title: Text(localization.titleTimeline),
@@ -38,12 +37,32 @@ class GlobalTimelineScreen extends HookConsumerWidget {
               children: [
                 Column(
                   children: [
-                    for (var i = 0; i < 30; i++) ...[
-                      const SizedBox(
-                        height: 100,
-                        child: Text('Hallo'),
+                    SizedBox(
+                      height: size.height * 0.5,
+                    ),
+                    for (var i = 0; i <= totalYears; i += yearInterval) ...[
+                      Container(
+                        height: blockHeight,
+                        width: size.width,
+                        margin: const EdgeInsets.only(
+                          left: 20,
+                        ),
+                        child: Text(
+                          (yearStart + i).abs().toString(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ],
+                    SizedBox(
+                      height: size.height * 0.5 -
+                          yearInterval * yearPixelLength -
+                          calculateRemainingBlockHeight(
+                            context,
+                            blockHeight,
+                          ),
+                    ),
                   ],
                 ),
                 for (var event in historyEvents) ...[
@@ -68,8 +87,12 @@ class GlobalTimelineScreen extends HookConsumerWidget {
 
           // year divider at half the page with the current year
           Padding(
-            padding: EdgeInsets.only(top: size.height * 0.5),
+            padding: EdgeInsets.only(
+              top: size.height * 0.5 - calculateTextHeight(context) / 2,
+            ),
             child: DividerLine(
+              yearStart: yearStart,
+              yearEnd: yearEnd,
               scrollController: scrollController,
             ),
           ),
@@ -79,3 +102,21 @@ class GlobalTimelineScreen extends HookConsumerWidget {
     );
   }
 }
+
+double calculateRemainingBlockHeight(
+  BuildContext context,
+  double blockHeight,
+) =>
+    blockHeight -
+    (TextPainter(
+          text: const TextSpan(
+            text: '0',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout())
+            .size
+            .height /
+        2;
