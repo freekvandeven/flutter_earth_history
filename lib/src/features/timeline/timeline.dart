@@ -29,6 +29,17 @@ class GlobalTimelineScreen extends HookConsumerWidget {
     var yearInterval = 100;
     var blockHeight = yearInterval * yearPixelLength;
     var yearActive = useState<int?>(null);
+    var fadingYear = useState<int?>(null);
+
+    // i need a flutter_hooks animation for sliding in the information card
+    // when a year is active
+
+    // var animationController = useAnimationController(
+    //   duration: const Duration(milliseconds: 500),
+    // );
+    // var animation = useAnimation(
+    //   Tween<double>(begin: 0, end: 1).animate(animationController),
+    // );
 
     useListenable(scrollController).addListener(() {
       var currentYear = yearStart +
@@ -45,8 +56,16 @@ class GlobalTimelineScreen extends HookConsumerWidget {
           .toList();
       if (events.isEmpty) {
         if (yearActive.value != null) {
-          yearActive.value = null;
+          fadingYear.value = yearActive.value;
           unawaited(HapticFeedback.selectionClick());
+          yearActive.value = null;
+          // remove the fading year after 1 second
+          Future.delayed(
+            const Duration(seconds: 1),
+            () {
+              fadingYear.value = null;
+            },
+          );
         }
         return;
       }
@@ -59,6 +78,7 @@ class GlobalTimelineScreen extends HookConsumerWidget {
       );
       if (yearActive.value != closestEvent.yearAfterBC) {
         yearActive.value = closestEvent.yearAfterBC;
+        fadingYear.value = null;
         unawaited(HapticFeedback.heavyImpact());
       }
     });
@@ -154,7 +174,7 @@ class GlobalTimelineScreen extends HookConsumerWidget {
               scrollController: scrollController,
             ),
           ),
-          if (yearActive.value != null) ...[
+          if (fadingYear.value != null || yearActive.value != null) ...[
             Container(
               margin: EdgeInsets.only(
                 top: size.height * 0.05,
@@ -165,7 +185,9 @@ class GlobalTimelineScreen extends HookConsumerWidget {
               height: size.height * 0.1,
               child: EventInformationCard(
                 event: historyEvents.firstWhere(
-                  (event) => event.yearAfterBC == yearActive.value,
+                  (event) =>
+                      event.yearAfterBC == yearActive.value ||
+                      event.yearAfterBC == fadingYear.value,
                 ),
               ),
             ),
