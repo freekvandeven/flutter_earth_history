@@ -31,3 +31,12 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/fonts/
+  
+  fonts:
+    - family: Cinzel
+      fonts:
+        - asset: assets/fonts/Cinzel-Regular.ttf
+        - asset: assets/fonts/Cinzel-Black.ttf
+        - asset: assets/fonts/Cinzel-Bold.ttf
+

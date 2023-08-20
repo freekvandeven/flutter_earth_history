@@ -8,6 +8,7 @@ class ProjectTheme {
 
 ThemeData getTheme() => ThemeData(
       useMaterial3: false,
+      fontFamily: 'Cinzel',
       textTheme: const TextTheme(),
       brightness: Brightness.dark,
     );

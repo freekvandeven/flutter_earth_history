@@ -88,7 +88,9 @@ class GlobalTimelineScreen extends HookConsumerWidget {
           // year divider at half the page with the current year
           Padding(
             padding: EdgeInsets.only(
-              top: size.height * 0.5 - calculateTextHeight(context) / 2,
+              top: size.height * 0.5 -
+                  calculateTextHeight(context) +
+                  calculateLabelTextHeight(context) / 2,
             ),
             child: DividerLine(
               yearStart: yearStart,
@@ -107,16 +109,13 @@ double calculateRemainingBlockHeight(
   BuildContext context,
   double blockHeight,
 ) =>
-    blockHeight -
-    (TextPainter(
-          text: const TextSpan(
-            text: '0',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout())
-            .size
-            .height /
-        2;
+    blockHeight - calculateLabelTextHeight(context) / 2;
+
+double calculateLabelTextHeight(BuildContext context) => (TextPainter(
+      text: const TextSpan(
+        text: '0',
+      ),
+      textDirection: TextDirection.ltr,
+    )..layout())
+        .size
+        .height;

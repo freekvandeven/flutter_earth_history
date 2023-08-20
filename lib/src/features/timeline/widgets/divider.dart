@@ -30,9 +30,19 @@ class DividerLine extends HookWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(currentYear.value.abs().toString()),
+            Text(
+              currentYear.value.abs().toString(),
+              style: const TextStyle(
+                fontSize: 30,
+                height: 1.0,
+              ),
+            ),
             Text(
               currentYear.value < 0 ? 'BCE' : 'AD',
+              style: const TextStyle(
+                fontSize: 15,
+                height: 1.0,
+              ),
             ),
           ],
         ),
@@ -63,9 +73,10 @@ class DividerLine extends HookWidget {
 
 double calculateTextHeight(BuildContext context) => (TextPainter(
       text: const TextSpan(
-        text: 'AD',
+        text: '0',
         style: TextStyle(
-          color: Colors.white,
+          fontSize: 30,
+          height: 1.0,
         ),
       ),
       textDirection: TextDirection.ltr,
