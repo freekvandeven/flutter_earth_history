@@ -46,6 +46,15 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
         var scrollViewPercentage = scrollController.position.viewportDimension /
             scrollController.position.maxScrollExtent;
         var frameWidth = constraints.maxWidth * scrollViewPercentage;
+        var positionOfFrame = max(
+          0.0,
+          min(
+            constraints.maxWidth - frameWidth,
+            (constraints.maxWidth - frameWidth) *
+                (currentYear.value - yearStart) /
+                totalYears,
+          ),
+        );
         return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -66,15 +75,6 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
                   onHorizontalDragDown: (details) {
                     // if the drag starts within the frame container
                     // set the frameDragging to true
-                    var positionOfFrame = max(
-                      0,
-                      min(
-                        constraints.maxWidth - frameWidth,
-                        (constraints.maxWidth - frameWidth) *
-                            (currentYear.value - yearStart) /
-                            totalYears,
-                      ),
-                    );
                     if (details.localPosition.dx >= positionOfFrame &&
                         details.localPosition.dx <=
                             positionOfFrame + frameWidth) {
@@ -94,14 +94,24 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
                   },
                   onTapDown: (details) {
                     // if the position that is clicked is
-                    // within the container with the frame
-
-                    // else update the position of the frame
-                    // container to the clicked position
+                    // not within the framecontainer
+                    if (details.localPosition.dx < positionOfFrame ||
+                        details.localPosition.dx >
+                            positionOfFrame + frameWidth) {
+                      var newPosition = details.localPosition.dx /
+                          constraints.maxWidth *
+                          scrollController.position.maxScrollExtent;
+                      scrollController.jumpTo(newPosition);
+                    }
                   },
                   child: Stack(
                     alignment: Alignment.centerLeft,
                     children: [
+                      Container(
+                        height: constraints.maxHeight,
+                        width: constraints.maxWidth,
+                        color: Colors.transparent,
+                      ),
                       // framecontainer which shows the visible part of timeline
                       Container(
                         decoration: BoxDecoration(
@@ -111,15 +121,7 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
                           ),
                         ),
                         margin: EdgeInsets.only(
-                          left: max(
-                            0,
-                            min(
-                              constraints.maxWidth - frameWidth,
-                              (constraints.maxWidth - frameWidth) *
-                                  (currentYear.value - yearStart) /
-                                  totalYears,
-                            ),
-                          ),
+                          left: positionOfFrame,
                         ),
                         width: frameWidth,
                         child: Column(
@@ -127,15 +129,13 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
                             // a vertical dotted line
                             for (var i = 0; i < amountOfDottedLines; i++) ...[
                               Expanded(
-                                flex: 2,
                                 child: Container(
                                   width: 0.5,
                                   color: Colors.white,
                                 ),
                               ),
-                              Expanded(
-                                flex: 2,
-                                child: Container(),
+                              const Expanded(
+                                child: SizedBox.shrink(),
                               ),
                             ],
                           ],
