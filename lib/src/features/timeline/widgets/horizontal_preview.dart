@@ -20,6 +20,7 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var historyPeriods = ref.watch(historyPeriodsProvider);
+    var frameDragging = useState(false);
     var currentYear = useState(yearStart);
     var totalYears = yearEnd - yearStart;
     var amountOfDottedLines = 10;
@@ -31,7 +32,7 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
           ? historyPeriods.first
           : historyPeriods.last,
     );
-    
+
     useListenable(scrollController).addListener(() {
       var pixels = scrollController.position.pixels;
       var scrollHeight = scrollController.position.maxScrollExtent;
@@ -61,48 +62,87 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 width: double.infinity,
-                child: Stack(
-                  alignment: Alignment.centerLeft,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 1,
-                        ),
+                child: GestureDetector(
+                  onHorizontalDragDown: (details) {
+                    // if the drag starts within the frame container
+                    // set the frameDragging to true
+                    var positionOfFrame = max(
+                      0,
+                      min(
+                        constraints.maxWidth - frameWidth,
+                        (constraints.maxWidth - frameWidth) *
+                            (currentYear.value - yearStart) /
+                            totalYears,
                       ),
-                      margin: EdgeInsets.only(
-                        left: max(
-                          0,
-                          min(
-                            constraints.maxWidth - frameWidth,
-                            (constraints.maxWidth - frameWidth) *
-                                (currentYear.value - yearStart) /
-                                totalYears,
+                    );
+                    if (details.localPosition.dx >= positionOfFrame &&
+                        details.localPosition.dx <=
+                            positionOfFrame + frameWidth) {
+                      frameDragging.value = true;
+                    }
+                  },
+                  onHorizontalDragUpdate: (details) {
+                    if (frameDragging.value) {
+                      // update the position of the frame container
+                      // get the delta x movement and convert it to a percentage
+                      var movementX = details.delta.dx /
+                          constraints.maxWidth *
+                          scrollController.position.maxScrollExtent;
+                      scrollController
+                          .jumpTo(scrollController.position.pixels + movementX);
+                    }
+                  },
+                  onTapDown: (details) {
+                    // if the position that is clicked is
+                    // within the container with the frame
+
+                    // else update the position of the frame
+                    // container to the clicked position
+                  },
+                  child: Stack(
+                    alignment: Alignment.centerLeft,
+                    children: [
+                      // framecontainer which shows the visible part of timeline
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.white,
+                            width: 1,
                           ),
                         ),
-                      ),
-                      width: frameWidth,
-                      child: Column(
-                        children: [
-                          // a vertical dotted line
-                          for (var i = 0; i < amountOfDottedLines; i++) ...[
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                width: 0.5,
-                                color: Colors.white,
+                        margin: EdgeInsets.only(
+                          left: max(
+                            0,
+                            min(
+                              constraints.maxWidth - frameWidth,
+                              (constraints.maxWidth - frameWidth) *
+                                  (currentYear.value - yearStart) /
+                                  totalYears,
+                            ),
+                          ),
+                        ),
+                        width: frameWidth,
+                        child: Column(
+                          children: [
+                            // a vertical dotted line
+                            for (var i = 0; i < amountOfDottedLines; i++) ...[
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  width: 0.5,
+                                  color: Colors.white,
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Container(),
-                            ),
+                              Expanded(
+                                flex: 2,
+                                child: Container(),
+                              ),
+                            ],
                           ],
-                        ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
