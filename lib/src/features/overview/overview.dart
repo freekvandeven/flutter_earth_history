@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_earth_history/src/features/overview/widgets/menu.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class OverviewScreen extends HookWidget {
@@ -12,22 +13,27 @@ class OverviewScreen extends HookWidget {
       backgroundColor: Colors.white,
       body: Stack(
         children: [
+          if (menuOpened.value) ...[
+            const MenuWidget(),
+          ],
           // round icon button to open a menu
           Positioned(
-            // safearea + 16px
             top: MediaQuery.of(context).padding.top + 8,
             left: MediaQuery.of(context).padding.left + 8,
-            child: IconButton(
-              // black background
-              color: Colors.black,
-
-              icon: Icon(
-                menuOpened.value ? Icons.close : Icons.sort_rounded,
-                color: Colors.white,
+            child: Ink(
+              decoration: const ShapeDecoration(
+                color: Colors.black,
+                shape: CircleBorder(),
               ),
-              onPressed: () {
-                menuOpened.value = !menuOpened.value;
-              },
+              child: IconButton(
+                icon: Icon(
+                  menuOpened.value ? Icons.close : Icons.sort_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  menuOpened.value = !menuOpened.value;
+                },
+              ),
             ),
           ),
         ],
