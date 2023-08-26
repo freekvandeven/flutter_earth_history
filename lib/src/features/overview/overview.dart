@@ -30,6 +30,10 @@ class OverviewScreen extends HookWidget {
               top: MediaQuery.of(context).padding.top + 8,
               right: MediaQuery.of(context).padding.right + 8,
               child: GestureDetector(
+                onTap:() {
+                  // change the language of the app
+                  
+                },
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.black,

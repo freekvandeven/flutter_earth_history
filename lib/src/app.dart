@@ -23,6 +23,7 @@ class MyApp extends ConsumerWidget {
         ],
         supportedLocales: const [
           Locale('en', ''), // English, no country code
+          Locale('nl', ''), // Dutch, no country code
         ],
         onGenerateTitle: (context) => AppLocalizations.of(context)!.appTitle,
         theme: getTheme(),
