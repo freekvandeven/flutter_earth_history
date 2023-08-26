@@ -12,9 +12,33 @@ class OverviewScreen extends HookWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
+        alignment: Alignment.center,
         children: [
           if (menuOpened.value) ...[
+            // semi transparant background behind the menu
+            Container(
+              color: Colors.black.withOpacity(0.3),
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+            ),
             const MenuWidget(),
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 8,
+              right: MediaQuery.of(context).padding.right + 8,
+              child: GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: const Text(
+                    'Switch language',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
           ],
           // round icon button to open a menu
           Positioned(
