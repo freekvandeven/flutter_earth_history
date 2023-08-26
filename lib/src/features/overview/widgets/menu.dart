@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_earth_history/src/features/overview/widgets/about.dart';
+import 'package:flutter_earth_history/src/global/extensions/localization.dart';
 import 'package:flutter_earth_history/src/routes.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,6 +9,7 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var localization = context.localizations;
     var size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -25,12 +27,12 @@ class MenuWidget extends StatelessWidget {
           behavior: HitTestBehavior.translucent,
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 // icon of timeline
-                Icon(Icons.timeline),
-                Text('Explore the timeline'),
+                const Icon(Icons.timeline),
+                Text(localization.menuExploreTimeline),
               ],
             ),
           ),
@@ -48,12 +50,12 @@ class MenuWidget extends StatelessWidget {
           behavior: HitTestBehavior.translucent,
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 // icon of blocks
-                Icon(Icons.grid_view),
-                Text('View your collection'),
+                const Icon(Icons.grid_view),
+                Text(localization.menuExploreCollection),
               ],
             ),
           ),
@@ -75,12 +77,12 @@ class MenuWidget extends StatelessWidget {
           behavior: HitTestBehavior.translucent,
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: const Row(
+            child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 // info icon
-                Icon(Icons.info_outline),
-                Text('About this app'),
+                const Icon(Icons.info_outline),
+                Text(localization.menuExploreAbout),
               ],
             ),
           ),

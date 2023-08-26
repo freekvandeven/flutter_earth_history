@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_earth_history/src/features/overview/widgets/menu.dart';
 import 'package:flutter_earth_history/src/global/extensions/localization.dart';
 import 'package:flutter_earth_history/src/routes.dart';
+import 'package:flutter_earth_history/src/services/application_config.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class OverviewScreen extends HookWidget {
+class OverviewScreen extends HookConsumerWidget {
   const OverviewScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     var menuOpened = useState(false);
     var localization = context.localizations;
     var size = MediaQuery.of(context).size;
@@ -30,10 +32,20 @@ class OverviewScreen extends HookWidget {
               top: MediaQuery.of(context).padding.top + 8,
               right: MediaQuery.of(context).padding.right + 8,
               child: GestureDetector(
-                onTap:() {
-                  // change the language of the app
-                  
-                },
+                onTap: () async =>
+                    // change the language of the app
+                    ref
+                        .read(applicationConfigProvider.notifier)
+                        .saveApplicationSettings(
+                          ref.read(applicationConfigProvider).copyWith(
+                                language: ref
+                                            .read(applicationConfigProvider)
+                                            .language ==
+                                        'en'
+                                    ? 'nl'
+                                    : 'en',
+                              ),
+                        ),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Colors.black,
