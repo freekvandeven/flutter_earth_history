@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_earth_history/src/routes.dart';
+import 'package:go_router/go_router.dart';
 
 class MenuWidget extends StatelessWidget {
   const MenuWidget({super.key});
@@ -16,41 +18,67 @@ class MenuWidget extends StatelessWidget {
           child: const Placeholder(),
         ),
         SizedBox(height: size.height * 0.05),
-        const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // icon of timeline
-            Icon(Icons.timeline),
-            Text('Explore the timeline'),
-          ],
+        GestureDetector(
+          onTap: () async =>
+              context.push(ProjectRoute.globalTimelineScreen.route),
+          behavior: HitTestBehavior.translucent,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // icon of timeline
+                Icon(Icons.timeline),
+                Text('Explore the timeline'),
+              ],
+            ),
+          ),
         ),
         // divider line
         Divider(
+          height: 1.0,
           color: Colors.black,
           indent: size.width * 0.15,
           endIndent: size.width * 0.15,
         ),
-        const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // icon of blocks
-            Icon(Icons.grid_view),
-            Text('View your collection'),
-          ],
+
+        GestureDetector(
+          onTap: () async => context.push(ProjectRoute.collectionScreen.route),
+          behavior: HitTestBehavior.translucent,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // icon of blocks
+                Icon(Icons.grid_view),
+                Text('View your collection'),
+              ],
+            ),
+          ),
         ),
         // divider line
         Divider(
+          height: 1.0,
           color: Colors.black,
           indent: size.width * 0.15,
           endIndent: size.width * 0.15,
         ),
-        const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // info icon
-            Icon(Icons.info_outline),
-            Text('About this app'),
-          ],
+        GestureDetector(
+          // show the app info dialog
+          onTap: () async => {},
+          behavior: HitTestBehavior.translucent,
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // info icon
+                Icon(Icons.info_outline),
+                Text('About this app'),
+              ],
+            ),
+          ),
         ),
         const Spacer(),
       ],

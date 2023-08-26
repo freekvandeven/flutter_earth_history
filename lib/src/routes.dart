@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_earth_history/src/features/collection/collection.dart';
 import 'package:flutter_earth_history/src/features/overview/overview.dart';
+import 'package:flutter_earth_history/src/features/period/period.dart';
 import 'package:flutter_earth_history/src/features/timeline/timeline.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,6 +13,7 @@ class ProjectRoute {
   static const overviewScreen = ProjectRoute('/overview');
   static const globalTimelineScreen = ProjectRoute('/global-timeline');
   static const collectionScreen = ProjectRoute('/collection');
+  static const periodScreen = ProjectRoute('/period');
 
   final String route;
 
@@ -39,8 +42,12 @@ final routerProvider = Provider<GoRouter>(
         builder: (context, state) => const OverviewScreen(),
       ),
       GoRoute(
+        path: ProjectRoute.periodScreen.route,
+        builder: (context, state) => const PeriodScreen(),
+      ),
+      GoRoute(
         path: ProjectRoute.collectionScreen.route,
-        builder: (context, state) => const Text('Collection Screen'),
+        builder: (context, state) => const CollectionScreen(),
       ),
     ],
   ),
