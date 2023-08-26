@@ -4,6 +4,8 @@
     "description": "The title of the application"
   },
   "titleTimeline": "Global Timeline",
-
+  "titleCollection": "Collection",
+  "titlePeriod": "Period",
+  "languageSwitch": "Dutch",
   "zzz": "zzz"
 }
