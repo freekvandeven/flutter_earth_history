@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_earth_history/src/features/overview/widgets/about.dart';
 import 'package:flutter_earth_history/src/routes.dart';
 import 'package:go_router/go_router.dart';
 
@@ -66,7 +67,11 @@ class MenuWidget extends StatelessWidget {
         ),
         GestureDetector(
           // show the app info dialog
-          onTap: () async => {},
+          onTap: () async => showDialog(
+            // the dialog should be a small as possible
+            context: context,
+            builder: (_) => const AboutAppDialog(),
+          ),
           behavior: HitTestBehavior.translucent,
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
