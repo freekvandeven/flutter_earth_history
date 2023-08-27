@@ -1,1 +1,110 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_earth_history/src/models/history_period.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+final historyPeriodsProvider = StateProvider<List<HistoryPeriod>>(
+  (ref) => const [
+    HistoryPeriod(
+      topColor: Colors.purple,
+      bottomColor: Colors.purpleAccent,
+      title: 'The Age of Dinosaurs',
+      description: 'The rise and dominance of dinosaurs on Earth.',
+      location: 'Global',
+      yearAfterBCStart: -100000000,
+      yearAfterBCEnd: -1000000,
+      overlayAssetLocation: 'assets/overlay_dinosaurs.png',
+      titleAssetLocation: 'assets/title_dinosaurs.png',
+      iconAssetLocation: 'assets/icon_dinosaurs.png',
+    ),
+    HistoryPeriod(
+      topColor: Colors.orange,
+      bottomColor: Colors.orangeAccent,
+      title: 'The Egyptian Pharaoh Age',
+      description: 'Known for the construction of pyramids'
+          ' and a complex pantheon of gods.',
+      location: 'Egypt',
+      yearAfterBCStart: -3100,
+      yearAfterBCEnd: -30,
+      overlayAssetLocation: 'assets/overlay_egypt.png',
+      titleAssetLocation: 'assets/title_egypt.png',
+      iconAssetLocation: 'assets/icon_egypt.png',
+    ),
+    HistoryPeriod(
+      topColor: Colors.blue,
+      bottomColor: Colors.blueAccent,
+      title: 'The Golden Age of Athens',
+      description:
+          'Immense cultural, intellectual, and artistic growth in Athens.',
+      location: 'Athens, Greece',
+      yearAfterBCStart: -500,
+      yearAfterBCEnd: -400,
+      overlayAssetLocation: 'assets/overlay_athens.png',
+      titleAssetLocation: 'assets/title_athens.png',
+      iconAssetLocation: 'assets/icon_athens.png',
+    ),
+    HistoryPeriod(
+      topColor: Colors.teal,
+      bottomColor: Colors.tealAccent,
+      title: 'The Roman Empire',
+      description: 'Known for its military expansion, engineering marvels, '
+          'and contributions to law.',
+      location: 'Rome',
+      yearAfterBCStart: -27,
+      yearAfterBCEnd: 476,
+      overlayAssetLocation: 'assets/overlay_rome.png',
+      titleAssetLocation: 'assets/title_rome.png',
+      iconAssetLocation: 'assets/icon_rome.png',
+    ),
+    HistoryPeriod(
+      topColor: Colors.green,
+      bottomColor: Colors.greenAccent,
+      title: 'The Renaissance',
+      description: 'A period of renewed interest in the arts, sciences, '
+          'and classical knowledge.',
+      location: 'Europe',
+      yearAfterBCStart: 1300,
+      yearAfterBCEnd: 1600,
+      overlayAssetLocation: 'assets/overlay_renaissance.png',
+      titleAssetLocation: 'assets/title_renaissance.png',
+      iconAssetLocation: 'assets/icon_renaissance.png',
+    ),
+    HistoryPeriod(
+      topColor: Colors.red,
+      bottomColor: Colors.redAccent,
+      title: 'The Age of Exploration',
+      description: 'European powers explored the world, establishing '
+          'new trade routes and colonies.',
+      location: 'Various',
+      yearAfterBCStart: 1400,
+      yearAfterBCEnd: 1700,
+      overlayAssetLocation: 'assets/overlay_exploration.png',
+      titleAssetLocation: 'assets/title_exploration.png',
+      iconAssetLocation: 'assets/icon_exploration.png',
+    ),
+    HistoryPeriod(
+      topColor: Colors.brown,
+      bottomColor: Colors.red,
+      title: 'The American Revolutionary Period',
+      description: 'Years leading up to and including the American Revolution.',
+      location: 'North America',
+      yearAfterBCStart: 1765,
+      yearAfterBCEnd: 1783,
+      overlayAssetLocation: 'assets/overlay_american_revolution.png',
+      titleAssetLocation: 'assets/title_american_revolution.png',
+      iconAssetLocation: 'assets/icon_american_revolution.png',
+    ),
+    HistoryPeriod(
+      topColor: Colors.grey,
+      bottomColor: Colors.blueGrey,
+      title: 'The Industrial Revolution',
+      description: 'Changed the face of manufacturing and '
+          'society with new technologies.',
+      location: 'Global',
+      yearAfterBCStart: 1760,
+      yearAfterBCEnd: 1840,
+      overlayAssetLocation: 'assets/overlay_industrial_revolution.png',
+      titleAssetLocation: 'assets/title_industrial_revolution.png',
+      iconAssetLocation: 'assets/icon_industrial_revolution.png',
+    ),
+  ],
+);
