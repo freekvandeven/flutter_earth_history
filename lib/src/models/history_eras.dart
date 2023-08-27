@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 @immutable
-class HistoryPeriod {
-  const HistoryPeriod({
+class HistoryEra {
+  const HistoryEra({
     required this.yearAfterBCStart,
     required this.yearAfterBCEnd,
     required this.title,

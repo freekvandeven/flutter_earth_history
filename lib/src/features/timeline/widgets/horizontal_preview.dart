@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_earth_history/src/services/history_periods.dart';
+import 'package:flutter_earth_history/src/services/history_eras.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -19,7 +19,7 @@ class HorizontalPreviewSlider extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var historyPeriods = ref.watch(historyPeriodsProvider);
+    var historyPeriods = ref.watch(historyErasProvider);
     var frameDragging = useState(false);
     var currentYear = useState(yearStart);
     var totalYears = yearEnd - yearStart;
