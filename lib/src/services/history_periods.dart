@@ -70,7 +70,7 @@ final historyPeriodsProvider = StateProvider<List<HistoryPeriod>>(
     ),
     HistoryPeriod(
       topColor: Colors.red,
-      bottomColor: Colors.redAccent,
+      bottomColor: Color.fromARGB(255, 126, 33, 33),
       title: 'The Age of Exploration',
       description: 'European powers explored the world, establishing '
           'new trade routes and colonies.',
