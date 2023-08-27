@@ -1,4 +1,4 @@
-import 'package:flutter_earth_history/src/models/history_eras.dart';
+import 'package:flutter_earth_history/src/models/history_era.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final historyErasProvider = StateProvider<List<HistoryEra>>(
